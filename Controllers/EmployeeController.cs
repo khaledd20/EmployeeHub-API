@@ -40,5 +40,40 @@ namespace EmployeeHub.API.Controllers
 
             return employee;
         }
+
+        [HttpGet("departments")]
+        public async Task<ActionResult<IEnumerable<Department>>> GetDepartments()
+        {
+            return await _context.Departments.ToListAsync();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateEmployee(int id, Employee updatedEmployee)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
+                return NotFound();
+
+            employee.FirstName = updatedEmployee.FirstName;
+            employee.LastName = updatedEmployee.LastName;
+            employee.Email = updatedEmployee.Email;
+            employee.PhoneNumber = updatedEmployee.PhoneNumber;
+            employee.Address = updatedEmployee.Address;
+            employee.DepartmentID = updatedEmployee.DepartmentID;
+            employee.RoleID = updatedEmployee.RoleID;
+            employee.Photo = updatedEmployee.Photo;
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+
+
+        [HttpGet("roles")]
+        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
+        {
+            return await _context.Roles.ToListAsync();
+        }
+
     }
 }
