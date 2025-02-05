@@ -11,7 +11,6 @@ namespace EmployeeHub.API.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
-        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

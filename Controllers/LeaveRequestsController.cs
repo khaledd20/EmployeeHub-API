@@ -39,6 +39,13 @@ namespace EmployeeHub.API.Controllers
 
             return Ok(leaveRequest);
         }
+        // GET: api/LeaveRequests/employee/{employeeID}
+        [HttpGet("employee/{employeeID}")]
+        public async Task<IActionResult> GetEmployeeLeaveRequests(int employeeID)
+        {
+            var requests = await _context.LeaveRequests.Where(lr => lr.EmployeeID == employeeID).ToListAsync();
+            return Ok(requests);
+        }
 
         // POST: api/LeaveRequests
         [HttpPost]

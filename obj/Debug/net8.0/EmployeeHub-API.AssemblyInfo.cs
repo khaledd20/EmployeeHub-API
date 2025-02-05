@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EmployeeHub-API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+30187a293594bc43bb5cf9509cc851e36bd54ec0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7238f0325d7f07d0633b9eff0e5f786e5d68834d")]
 [assembly: System.Reflection.AssemblyProductAttribute("EmployeeHub-API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EmployeeHub-API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

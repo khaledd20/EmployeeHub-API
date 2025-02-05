@@ -25,23 +25,27 @@ namespace EmployeeHub.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
-            
-            if (user == null || user.Password != request.Password)
+            // Fetch the employee by username only, avoid putting non-translatable methods in the query
+            var employee = await _context.Employees
+                .Include(e => e.Role)
+                .FirstOrDefaultAsync(e => e.Username == request.Username);
+
+            // Perform the password check after retrieving the employee
+            if (employee == null || !VerifyPassword(request.Password, employee.Password))
                 return Unauthorized("Invalid username or password");
 
-            var token = GenerateJwtToken(user);
-            return Ok(new { token, role = user.Role });
+            var token = GenerateJwtToken(employee);
+            return Ok(new { token, role = employee.Role?.RoleName, employeeId = employee.EmployeeID });
         }
 
-
-
-        private string GenerateJwtToken(User user)
+        private string GenerateJwtToken(Employee employee)
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role)
+                new Claim(ClaimTypes.Name, employee.Username),
+                new Claim(ClaimTypes.NameIdentifier, employee.EmployeeID.ToString()), // Keep this if other systems rely on NameIdentifier
+                new Claim("EmployeeID", employee.EmployeeID.ToString()), // Adding explicit EmployeeID claim
+                new Claim(ClaimTypes.Role, employee.Role?.RoleID.ToString() ?? "0") // Use string for RoleID with a default value
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -58,9 +62,11 @@ namespace EmployeeHub.API.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private bool VerifyPassword(string password, string storedHash)
+
+        private bool VerifyPassword(string inputPassword, string storedPassword)
         {
-            return BCrypt.Net.BCrypt.Verify(password, storedHash);
+            // Implement password verification logic here, ideally using hashing
+            return inputPassword == storedPassword; // Placeholder: replace with real hashing comparison
         }
     }
 

@@ -13,5 +13,8 @@ namespace EmployeeHub.API.Models
         public Department? Department { get; set; } // Nullable navigation property
         public int RoleID { get; set; }
         public Role? Role { get; set; }         // Nullable navigation property
+
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
